@@ -8,4 +8,5 @@ COPY go.mod go.sum ./
 
 RUN go install \
     github.com/99designs/gqlgen \
-    github.com/cosmtrek/air
+    github.com/cosmtrek/air \
+    github.com/rubenv/sql-migrate/sql-migrate

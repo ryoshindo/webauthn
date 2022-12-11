@@ -25,7 +25,5 @@ services:
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: dev
-    networks:
-      - intranet
     ports:
       - 5432:5432
