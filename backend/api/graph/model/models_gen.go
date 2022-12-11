@@ -2,19 +2,22 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type Account struct {
+	ID       string `json:"id"`
+	Email    string `json:"email"`
+	UserName string `json:"userName"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type CompleteWebauthnLoginInput struct {
+	Credential string `json:"credential"`
+	Email      string `json:"email"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type CompleteWebauthnRegistrationInput struct {
+	Credential string `json:"credential"`
+}
+
+type CreateAccountInput struct {
+	Email    string `json:"email"`
+	UserName string `json:"userName"`
 }

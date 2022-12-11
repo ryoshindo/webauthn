@@ -2,27 +2,36 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
-}
-
-type User {
-  id: ID!
-  name: String!
+type Account {
+  id: String!
+  email: String!
+  userName: String!
 }
 
 type Query {
-  todos: [Todo!]!
+  account: Account!
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input CreateAccountInput {
+  email: String!
+  userName: String!
+}
+
+input CompleteWebauthnRegistrationInput {
+  credential: String!
+}
+
+input CompleteWebauthnLoginInput {
+  credential: String!
+  email: String!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createAccount(input: CreateAccountInput!): Account!
+  initiateWebauthnRegistration: String!
+  completeWebauthnRegistration(
+    input: CompleteWebauthnRegistrationInput
+  ): Boolean!
+  initiateWebauthnLogin: String!
+  completeWebauthnLogin(input: CompleteWebauthnLoginInput!): Boolean!
 }
