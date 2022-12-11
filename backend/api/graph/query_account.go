@@ -2,11 +2,17 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/ryoshindo/webauthn/backend/api/graph/model"
+	"github.com/ryoshindo/webauthn/backend/api/graph/session"
 )
 
 func (r *queryResolver) Account(ctx context.Context) (*model.Account, error) {
-	panic(fmt.Errorf("not implemented"))
+	account := session.Account(ctx)
+	if account == nil {
+		return nil, errors.New("UNAUTHORIZED")
+	}
+	
+	return account, nil
 }

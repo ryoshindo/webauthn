@@ -34,4 +34,5 @@ type Mutation {
   ): Boolean!
   initiateWebauthnLogin: String!
   completeWebauthnLogin(input: CompleteWebauthnLoginInput!): Boolean!
+  logout: Boolean!
 }
