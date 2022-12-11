@@ -1,0 +1,31 @@
+version: "3"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: air -c .air.toml
+    ports:
+      - 8080:8080
+    environment:
+      DB_DATASOURCE: "host=db port=5432 user=app dbname=app password=dev sslmode=disable"
+    volumes:
+      - .:/go/src/github.com/ryoshindo/webauthn/backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15.1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: dev
+    networks:
+      - intranet
+    ports:
+      - 5432:5432
