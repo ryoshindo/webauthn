@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/ryoshindo/webauthn/backend/api/graph/model"
+	"github.com/ryoshindo/webauthn/backend/model"
 )
 
 type AccountRepository interface {

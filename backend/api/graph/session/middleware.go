@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/ryoshindo/webauthn/backend/api/graph/model"
+	"github.com/ryoshindo/webauthn/backend/model"
 	"github.com/ryoshindo/webauthn/backend/repository"
 )
 

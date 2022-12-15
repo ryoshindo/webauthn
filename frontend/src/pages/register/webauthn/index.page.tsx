@@ -1,15 +1,16 @@
+import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { Signin } from "./Signin";
 
-const SigninPage: FC<{}> = () => {
+const RegisterPage: FC<{}> = () => {
   const router = useRouter();
+  const toast = useToast();
 
-  return <Signin onSubmit={() => {}} />;
+  return <></>;
 };
 
 const Page: FC<{}> = ({}) => {
-  return <SigninPage />;
+  return <RegisterPage />;
 };
 
 export default Page;

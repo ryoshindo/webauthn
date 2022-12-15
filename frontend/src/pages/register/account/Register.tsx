@@ -15,21 +15,22 @@ import { reactHookFormDefaultOptions } from "src/form/reactHookFormDefaultOption
 
 type FormValues = {
   email: string;
+  userName: string;
 };
 
-export const Signin: FC<
-  { onSubmit: (values: FormValues) => void } & ChakraProps
-> = ({ onSubmit, ...props }) => {
+export const Register: FC<
+  { submitting: boolean; onSubmit: (values: FormValues) => void } & ChakraProps
+> = ({ submitting, onSubmit, ...props }) => {
   return (
-    <Box {...props}>
-      <EmailForm onSubmit={onSubmit} />
+    <Box>
+      <EmailForm submitting={submitting} onSubmit={onSubmit} />
     </Box>
   );
 };
 
 const EmailForm: FC<
-  { onSubmit: (values: FormValues) => void } & ChakraProps
-> = ({ onSubmit, ...props }) => {
+  { submitting: boolean; onSubmit: (values: FormValues) => void } & ChakraProps
+> = ({ submitting, onSubmit, ...props }) => {
   const {
     handleSubmit,
     register,
@@ -53,14 +54,26 @@ const EmailForm: FC<
               />
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
+            <FormControl mt="24px" id="userName" isInvalid={!!errors.userName}>
+              <FormLabel>user name</FormLabel>
+              <Input
+                type="text"
+                inputMode="text"
+                placeholder="user name"
+                {...register("userName", {
+                  required: "user name is required.",
+                })}
+              />
+              <FormErrorMessage>{errors.userName?.message}</FormErrorMessage>
+            </FormControl>
             <Box
               mt="24px"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              <Button w="100px" type="submit">
-                Sign In
+              <Button w="100px" type="submit" isLoading={submitting}>
+                Register
               </Button>
             </Box>
           </CardBody>

@@ -14,5 +14,9 @@ func (r *queryResolver) Viewer(ctx context.Context) (*model.Account, error) {
 		return nil, errors.New("UNAUTHORIZED")
 	}
 	
-	return account, nil
+	return &model.Account{
+		ID: account.ID,
+		Email: account.Email,
+		UserName: account.UserName,
+	}, nil
 }

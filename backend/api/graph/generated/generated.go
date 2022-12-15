@@ -65,7 +65,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateAccount(ctx context.Context, input model.CreateAccountInput) (*model.Account, error)
+	CreateAccount(ctx context.Context, input model.CreateAccountInput) (bool, error)
 	InitiateWebauthnRegistration(ctx context.Context) (string, error)
 	CompleteWebauthnRegistration(ctx context.Context, input *model.CompleteWebauthnRegistrationInput) (bool, error)
 	InitiateWebauthnLogin(ctx context.Context) (string, error)
@@ -276,7 +276,7 @@ input CompleteWebauthnLoginInput {
 }
 
 type Mutation {
-  createAccount(input: CreateAccountInput!): Account!
+  createAccount(input: CreateAccountInput!): Boolean!
   initiateWebauthnRegistration: String!
   completeWebauthnRegistration(
     input: CompleteWebauthnRegistrationInput
@@ -549,9 +549,9 @@ func (ec *executionContext) _Mutation_createAccount(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Account)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNAccount2ᚖgithubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐAccount(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createAccount(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -561,15 +561,7 @@ func (ec *executionContext) fieldContext_Mutation_createAccount(ctx context.Cont
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Account_id(ctx, field)
-			case "email":
-				return ec.fieldContext_Account_email(ctx, field)
-			case "userName":
-				return ec.fieldContext_Account_userName(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Account", field.Name)
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	defer func() {

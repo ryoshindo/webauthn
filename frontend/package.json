@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3333",
-    "build": "next build",
+    "dev": "run-p dev:*",
+    "dev:next": "next dev -p 3333",
+    "dev:path": "pathpida --ignorePath .gitignore --watch",
+    "build": "pathpida --ignorePath .gitignore && next build",
     "start": "next start",
     "lint": "next lint",
     "gen:graphql": "graphql-codegen"
@@ -24,6 +26,7 @@
     "next": "13.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.40.0",
     "typescript": "4.9.4"
   },
   "devDependencies": {
@@ -33,6 +36,8 @@
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
-    "@graphql-codegen/typescript-resolvers": "^2.7.10"
+    "@graphql-codegen/typescript-resolvers": "^2.7.10",
+    "npm-run-all": "^4.1.5",
+    "pathpida": "^0.20.1"
   }
 }

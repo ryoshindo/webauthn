@@ -6,6 +6,8 @@ require (
 	github.com/99designs/gqlgen v0.17.22
 	github.com/cosmtrek/air v1.40.4
 	github.com/go-chi/chi/v5 v5.0.8
+	github.com/go-chi/cors v1.2.1
+	github.com/oklog/ulid/v2 v2.1.0
 	github.com/rubenv/sql-migrate v1.2.0
 	github.com/uptrace/bun v1.1.9
 	github.com/uptrace/bun/dialect/pgdialect v1.1.9
@@ -30,7 +32,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.3 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/urfave/cli/v2 v2.8.1 // indirect

@@ -3,8 +3,8 @@ package psql
 import (
 	"context"
 
-	"github.com/ryoshindo/webauthn/backend/api/graph/model"
 	"github.com/ryoshindo/webauthn/backend/db"
+	"github.com/ryoshindo/webauthn/backend/model"
 )
 
 type AccountRepository struct{}
