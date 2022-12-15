@@ -1,7 +1,8 @@
-package api
+package main
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 	"os"
 
@@ -28,8 +29,8 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	
-	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(os.Getenv("DB_DATASOURCE"))))
+
+	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(os.Getenv("DB_DSN"))))
 	db := bun.NewDB(sqldb, pgdialect.New())
 
 	r.Use(dbMiddlewareContext(db))
@@ -38,6 +39,12 @@ func main() {
 
 	r.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	r.Handle("/query", srv)
+
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	err := http.ListenAndServe(":"+port, r)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func newResolver() *graph.Resolver {
