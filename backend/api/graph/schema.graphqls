@@ -9,7 +9,7 @@ type Account {
 }
 
 type Query {
-  account: Account!
+  viewer: Account!
 }
 
 input CreateAccountInput {

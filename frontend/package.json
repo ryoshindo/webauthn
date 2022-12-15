@@ -6,9 +6,11 @@
     "dev": "next dev -p 3333",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen:graphql": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.2",
     "@chakra-ui/react": "^2.4.3",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -18,9 +20,19 @@
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "framer-motion": "^7.6.19",
+    "graphql": "^16.6.0",
     "next": "13.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.4"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.16.1",
+    "@graphql-codegen/fragment-matcher": "^3.3.3",
+    "@graphql-codegen/near-operation-file-preset": "^2.4.4",
+    "@graphql-codegen/typescript": "^2.8.5",
+    "@graphql-codegen/typescript-operations": "^2.5.10",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-codegen/typescript-resolvers": "^2.7.10"
   }
 }
