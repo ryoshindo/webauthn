@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/ryoshindo/webauthn/backend/api/graph"
 	"github.com/ryoshindo/webauthn/backend/api/graph/generated"
 	"github.com/ryoshindo/webauthn/backend/db"
@@ -18,9 +19,15 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+	"github.com/uptrace/bun/extra/bundebug"
 )
 
 const defaultPort = "8080"
+
+var (
+	WebAuthn *webauthn.WebAuthn
+	err      error
+)
 
 func main() {
 	port := os.Getenv("PORT")
@@ -33,15 +40,25 @@ func main() {
 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(os.Getenv("DB_DSN"))))
 	db := bun.NewDB(sqldb, pgdialect.New())
+	db.AddQueryHook(bundebug.NewQueryHook())
+
+	WebAuthn, err = webauthn.New(&webauthn.Config{
+		RPDisplayName: "Ryo Shindo",
+		RPID:          "localhost",
+		RPOrigin:      "http://localhost:8080",
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	r.Use(dbMiddlewareContext(db))
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:*"},
-    	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-    	AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-    	ExposedHeaders:   []string{"Link"},
-    	AllowCredentials: false,
-    	MaxAge:           300, // Maximum value not ignored by any of major browsers
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: newResolver()}))
@@ -50,8 +67,7 @@ func main() {
 	r.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	err := http.ListenAndServe(":"+port, r)
-	if err != nil {
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatalln(err)
 	}
 }

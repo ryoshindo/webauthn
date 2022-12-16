@@ -52,7 +52,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CompleteWebauthnLogin        func(childComplexity int, input model.CompleteWebauthnLoginInput) int
-		CompleteWebauthnRegistration func(childComplexity int, input *model.CompleteWebauthnRegistrationInput) int
+		CompleteWebauthnRegistration func(childComplexity int, input model.CompleteWebauthnRegistrationInput) int
 		CreateAccount                func(childComplexity int, input model.CreateAccountInput) int
 		InitiateWebauthnLogin        func(childComplexity int) int
 		InitiateWebauthnRegistration func(childComplexity int) int
@@ -67,7 +67,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateAccount(ctx context.Context, input model.CreateAccountInput) (bool, error)
 	InitiateWebauthnRegistration(ctx context.Context) (string, error)
-	CompleteWebauthnRegistration(ctx context.Context, input *model.CompleteWebauthnRegistrationInput) (bool, error)
+	CompleteWebauthnRegistration(ctx context.Context, input model.CompleteWebauthnRegistrationInput) (bool, error)
 	InitiateWebauthnLogin(ctx context.Context) (string, error)
 	CompleteWebauthnLogin(ctx context.Context, input model.CompleteWebauthnLoginInput) (bool, error)
 	Logout(ctx context.Context) (bool, error)
@@ -134,7 +134,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CompleteWebauthnRegistration(childComplexity, args["input"].(*model.CompleteWebauthnRegistrationInput)), true
+		return e.complexity.Mutation.CompleteWebauthnRegistration(childComplexity, args["input"].(model.CompleteWebauthnRegistrationInput)), true
 
 	case "Mutation.createAccount":
 		if e.complexity.Mutation.CreateAccount == nil {
@@ -279,7 +279,7 @@ type Mutation {
   createAccount(input: CreateAccountInput!): Boolean!
   initiateWebauthnRegistration: String!
   completeWebauthnRegistration(
-    input: CompleteWebauthnRegistrationInput
+    input: CompleteWebauthnRegistrationInput!
   ): Boolean!
   initiateWebauthnLogin: String!
   completeWebauthnLogin(input: CompleteWebauthnLoginInput!): Boolean!
@@ -311,10 +311,10 @@ func (ec *executionContext) field_Mutation_completeWebauthnLogin_args(ctx contex
 func (ec *executionContext) field_Mutation_completeWebauthnRegistration_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *model.CompleteWebauthnRegistrationInput
+	var arg0 model.CompleteWebauthnRegistrationInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalOCompleteWebauthnRegistrationInput2ᚖgithubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCompleteWebauthnRegistrationInput(ctx, tmp)
+		arg0, err = ec.unmarshalNCompleteWebauthnRegistrationInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCompleteWebauthnRegistrationInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -636,7 +636,7 @@ func (ec *executionContext) _Mutation_completeWebauthnRegistration(ctx context.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CompleteWebauthnRegistration(rctx, fc.Args["input"].(*model.CompleteWebauthnRegistrationInput))
+		return ec.resolvers.Mutation().CompleteWebauthnRegistration(rctx, fc.Args["input"].(model.CompleteWebauthnRegistrationInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3425,6 +3425,11 @@ func (ec *executionContext) unmarshalNCompleteWebauthnLoginInput2githubᚗcomᚋ
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCompleteWebauthnRegistrationInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCompleteWebauthnRegistrationInput(ctx context.Context, v interface{}) (model.CompleteWebauthnRegistrationInput, error) {
+	res, err := ec.unmarshalInputCompleteWebauthnRegistrationInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNCreateAccountInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCreateAccountInput(ctx context.Context, v interface{}) (model.CreateAccountInput, error) {
 	res, err := ec.unmarshalInputCreateAccountInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3722,14 +3727,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
-}
-
-func (ec *executionContext) unmarshalOCompleteWebauthnRegistrationInput2ᚖgithubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCompleteWebauthnRegistrationInput(ctx context.Context, v interface{}) (*model.CompleteWebauthnRegistrationInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputCompleteWebauthnRegistrationInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {

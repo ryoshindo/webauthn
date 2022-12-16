@@ -7,5 +7,7 @@ CREATE TABLE accounts (
 	updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
+CREATE UNIQUE INDEX ON accounts(email);
+
 -- +migrate Down
 DROP TABLE accounts;

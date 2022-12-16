@@ -1,0 +1,9 @@
+mutation InitiateWebauthnRegistration {
+  initiateWebauthnRegistration
+}
+
+mutation CompleteWebauthnRegistration(
+  $input: CompleteWebauthnRegistrationInput!
+) {
+  completeWebauthnRegistration(input: $input)
+}

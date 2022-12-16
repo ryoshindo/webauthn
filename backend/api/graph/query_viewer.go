@@ -13,10 +13,10 @@ func (r *queryResolver) Viewer(ctx context.Context) (*model.Account, error) {
 	if account == nil {
 		return nil, errors.New("UNAUTHORIZED")
 	}
-	
+
 	return &model.Account{
-		ID: account.ID,
-		Email: account.Email,
+		ID:       account.ID,
+		Email:    account.Email,
 		UserName: account.UserName,
 	}, nil
 }
