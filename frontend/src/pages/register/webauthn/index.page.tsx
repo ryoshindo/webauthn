@@ -18,15 +18,17 @@ const RegisterPage: FC<{ viewer: Account }> = ({ viewer }) => {
     useInitiateWebauthnRegistrationMutation({
       onCompleted(data) {
         const options = JSON.parse(data.initiateWebauthnRegistration);
-        WebAuthnJSON.create({ publicKey: options }).then((credential) => {
-          completeWebauthnRegistration({
-            variables: {
-              input: {
-                credential: JSON.stringify(credential),
+        WebAuthnJSON.create({ publicKey: options["publicKey"] }).then(
+          (credential) => {
+            completeWebauthnRegistration({
+              variables: {
+                input: {
+                  credential: JSON.stringify(credential),
+                },
               },
-            },
-          });
-        });
+            });
+          }
+        );
       },
     });
 
