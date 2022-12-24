@@ -17,7 +17,7 @@ func (r *mutationResolver) CreateAccount(ctx context.Context, input model.Create
 		return false, errors.New("INAPPROPRIATE_ACCOUNT_INPUT")
 	}
 
-	session.Set(ctx, account)
+	session.CreateSession(ctx, account)
 
 	return true, nil
 }

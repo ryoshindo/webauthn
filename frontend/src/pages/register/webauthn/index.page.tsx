@@ -6,7 +6,7 @@ import {
   useCompleteWebauthnRegistrationMutation,
   useInitiateWebauthnRegistrationMutation,
 } from "./document.gen";
-import { Register } from "../account/Register";
+import { Register } from "./Register";
 import { Account } from "src/types/graphql.gen";
 import { useFetchViewerQuery } from "src/pages/document.gen";
 
@@ -57,7 +57,7 @@ const RegisterPage: FC<{ viewer: Account }> = ({ viewer }) => {
 const ViewerLoader: FC<{
   children: (props: { viewer: Account }) => ReactNode;
 }> = ({ children }) => {
-  const { loading, data } = useFetchViewerQuery({});
+  const { loading, data } = useFetchViewerQuery();
 
   if (loading || !data?.viewer) {
     return <Spinner />;

@@ -9,7 +9,7 @@ import (
 )
 
 func (r *queryResolver) Viewer(ctx context.Context) (*model.Account, error) {
-	account := session.Account(ctx)
+	account := session.AccountFromSession(ctx)
 	if account == nil {
 		return nil, errors.New("UNAUTHORIZED")
 	}

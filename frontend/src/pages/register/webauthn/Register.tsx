@@ -13,7 +13,7 @@ import { reactHookFormDefaultOptions } from "src/form/reactHookFormDefaultOption
 
 type FormValues = {};
 
-export const Webauthn: FC<
+export const Register: FC<
   { submitting: boolean; onSubmit: (values: FormValues) => void } & ChakraProps
 > = ({ submitting, onSubmit, ...props }) => {
   const {

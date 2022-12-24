@@ -10,7 +10,7 @@ import (
 )
 
 func (r *mutationResolver) InitiateWebauthnRegistration(ctx context.Context) (string, error) {
-	account := session.Account(ctx)
+	account := session.AccountFromSession(ctx)
 	if account == nil {
 		return "", errors.New("UNAUTHORIZED")
 	}

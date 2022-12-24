@@ -7,6 +7,6 @@ import (
 )
 
 func (r *mutationResolver) Logout(ctx context.Context) (bool, error) {
-	session.Remove(ctx)
+	session.DeleteSession(ctx)
 	return true, nil
 }

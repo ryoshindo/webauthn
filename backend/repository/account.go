@@ -9,5 +9,5 @@ import (
 type AccountRepository interface {
 	FindByID(context.Context, string) (*model.Account, error)
 	FindByEmail(context.Context, string) (*model.Account, error)
-	Create(ctx context.Context, account *model.Account) error
+	Create(context.Context, *model.Account) error
 }

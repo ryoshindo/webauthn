@@ -10,6 +10,7 @@ services:
     environment:
       DB_DATASOURCE: "host=db port=5432 user=app dbname=app password=dev sslmode=disable"
       DB_DSN: postgres://app:dev@db:5432/app?sslmode=disable
+      SESSION_TOKEN_COOKIE_KEY: dev_webauthn_app_session_token
     volumes:
       - .:/go/src/github.com/ryoshindo/webauthn/backend
     depends_on:
@@ -28,3 +29,8 @@ services:
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: dev
+
+  redis:
+    image: redis:7
+    ports:
+      - 6379:6379
