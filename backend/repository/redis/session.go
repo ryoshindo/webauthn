@@ -28,7 +28,7 @@ func (r *SessionRepository) FindByToken(ctx context.Context, token string) (*mod
 	return &session, nil
 }
 
-func (r *SessionRepository) Create(ctx context.Context, session *model.Session) error {
+func (r *SessionRepository) Set(ctx context.Context, session *model.Session) error {
 	s, err := json.Marshal(session)
 	if err != nil {
 		return err

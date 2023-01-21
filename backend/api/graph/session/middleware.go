@@ -40,10 +40,9 @@ func Middleware(accountRepo repository.AccountRepository, sessionRepo repository
 				return
 			}
 
-			account, err := accountRepo.FindByID(ctx, sess.AccountID)
-			fmt.Println(sess.AccountID, account, err)
+			account, err := accountRepo.FindByID(ctx, sess.Account.ID)
 			if err != nil {
-				next.ServeHTTP(srw, r.WithContext(ctx))
+				next.ServeHTTP(srw, r)
 				return
 			}
 
@@ -93,13 +92,28 @@ func AccountFromSession(ctx context.Context) *model.Account {
 	return account
 }
 
+func GetSession(ctx context.Context) *model.Session {
+	session, _ := ctx.Value(sessionCtxKey).(*model.Session)
+	return session
+}
+
 func CreateSession(ctx context.Context, account *model.Account) error {
 	handler, _ := ctx.Value(sessionHandlerCtxKey).(*sessionHandler)
+	fmt.Println("createsesio", handler, account)
 	if handler == nil {
 		return nil
 	}
 
 	return handler.CreateSession(ctx, account)
+}
+
+func UpdateSession(ctx context.Context, account *model.Account) error {
+	handler, _ := ctx.Value(sessionHandlerCtxKey).(*sessionHandler)
+	if handler == nil {
+		return nil
+	}
+
+	return handler.UpdateSession(ctx, account)
 }
 
 func DeleteSession(ctx context.Context) error {
@@ -117,12 +131,24 @@ func DeleteSession(ctx context.Context) error {
 }
 
 func (sh *sessionHandler) CreateSession(ctx context.Context, account *model.Account) error {
-	session, err := model.NewSession(account.ID)
+	session, err := model.NewSession(*account)
 	if err != nil {
 		return err
 	}
 
-	if err := sh.sessionRepo.Create(ctx, session); err != nil {
+	if err := sh.sessionRepo.Set(ctx, session); err != nil {
+		return err
+	}
+
+	sh.responseWriter.session = session
+
+	return nil
+}
+
+func (sh *sessionHandler) UpdateSession(ctx context.Context, account *model.Account) error {
+	session := GetSession(ctx)
+	session.Account = *account
+	if err := sh.sessionRepo.Set(ctx, session); err != nil {
 		return err
 	}
 

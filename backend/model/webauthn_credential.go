@@ -11,8 +11,7 @@ type WebauthnCredential struct {
 	ExternalID string    `bun:"external_id"`
 	SignCount  int64     `bun:"sign_count"`
 
-	Account      *Account              `bun:"rel:belongs-to,join:account_id=id"`
-	Registration *WebauthnRegistration `bun:"rel:belongs-to,join:registration_id=id"`
+	Account *Account `bun:"rel:belongs-to,join:account_id=id"`
 }
 
 type WebauthnCredentialList []WebauthnCredential

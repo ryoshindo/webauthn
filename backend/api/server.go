@@ -84,6 +84,7 @@ func main() {
 func newResolver() *graph.Resolver {
 	return graph.NewResolver(
 		prepo.NewAccountRepository(),
+		prepo.NewWebauthnCredentialRepository(),
 	)
 }
 

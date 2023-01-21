@@ -7,10 +7,8 @@ import (
 )
 
 type Session struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	AccountID string    `json:"account_id"`
+	ID      string  `json:"id"`
+	Account Account `json:"account"`
 
 	ExpiresAt time.Duration
 	Token     string
@@ -18,7 +16,7 @@ type Session struct {
 
 const sessionDefaultExpiry = 1 * 24 * time.Hour
 
-func NewSession(accountID string) (*Session, error) {
+func NewSession(account Account) (*Session, error) {
 	maxStringLength := 128
 	token, err := rand.GenerateRandomString(maxStringLength)
 	if err != nil {
@@ -27,7 +25,7 @@ func NewSession(accountID string) (*Session, error) {
 
 	return &Session{
 		ID:        NewULIDString(),
-		AccountID: accountID,
+		Account:   account,
 		Token:     token,
 		ExpiresAt: sessionDefaultExpiry,
 	}, nil

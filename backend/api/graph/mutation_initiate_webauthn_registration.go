@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/ryoshindo/webauthn/backend/api/graph/session"
@@ -24,7 +23,11 @@ func (r *mutationResolver) InitiateWebauthnRegistration(ctx context.Context) (st
 	if err != nil {
 		return "", errors.New("FAILED_INITIATE_WEBAUTHN_REGISTRATION")
 	}
-	fmt.Println("challenge", data.Challenge)
+
+	account.WebauthnRegistration.Challenge = data.Challenge
+	if err := session.UpdateSession(ctx, account); err != nil {
+		return "", errors.New("FAILED_UPDATE_ACCOUNT_SESSION")
+	}
 
 	s, _ := json.Marshal(options)
 

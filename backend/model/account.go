@@ -14,10 +14,15 @@ type Account struct {
 	Email     string    `bun:"email"`
 	UserName  string    `bun:"user_name"`
 
-	WebauthnRegistrations []*WebauthnRegistration `bun:"rel:has-many,join:id=account_id"`
-	WebauthnCredentials   []*WebauthnCredential   `bun:"rel:has-many,join:id=account_id"`
+	WebauthnCredentials []*WebauthnCredential `bun:"rel:has-many,join:id=account_id"`
 
 	credential []webauthn.Credential
+
+	WebauthnRegistration webauthnRegistration `json:"webauthn_registration" bun:"-"`
+}
+
+type webauthnRegistration struct {
+	Challenge string `json:"challenge"`
 }
 
 type AccountList []Account

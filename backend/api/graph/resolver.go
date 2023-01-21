@@ -10,11 +10,15 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	accountRepo repository.AccountRepository
-	webAuthn    *webauthn.WebAuthn
+	accountRepo            repository.AccountRepository
+	webauthnCredentialRepo repository.WebauthnCredentialRepository
+	webAuthn               *webauthn.WebAuthn
 }
 
-func NewResolver(accountRepo repository.AccountRepository) *Resolver {
+func NewResolver(
+	accountRepo repository.AccountRepository,
+	webauthnCredentialRepo repository.WebauthnCredentialRepository,
+) *Resolver {
 	webAuthn, _ := webauthn.New(&webauthn.Config{
 		RPDisplayName: "Ryo Shindo",
 		RPID:          "localhost",
@@ -22,7 +26,8 @@ func NewResolver(accountRepo repository.AccountRepository) *Resolver {
 	})
 
 	return &Resolver{
-		accountRepo: accountRepo,
-		webAuthn:    webAuthn,
+		accountRepo:            accountRepo,
+		webauthnCredentialRepo: webauthnCredentialRepo,
+		webAuthn:               webAuthn,
 	}
 }
