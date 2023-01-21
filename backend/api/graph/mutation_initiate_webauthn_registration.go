@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/ryoshindo/webauthn/backend/api/graph/session"
@@ -19,10 +20,11 @@ func (r *mutationResolver) InitiateWebauthnRegistration(ctx context.Context) (st
 		credCreationOpts.CredentialExcludeList = account.CredentialExcludeList()
 	}
 
-	options, _, err := r.webAuthn.BeginRegistration(account, registerOptions)
+	options, data, err := r.webAuthn.BeginRegistration(account, registerOptions)
 	if err != nil {
 		return "", errors.New("FAILED_INITIATE_WEBAUTHN_REGISTRATION")
 	}
+	fmt.Println("challenge", data.Challenge)
 
 	s, _ := json.Marshal(options)
 

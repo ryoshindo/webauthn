@@ -14,9 +14,10 @@ type Account struct {
 	Email     string    `bun:"email"`
 	UserName  string    `bun:"user_name"`
 
-	Credentials []*Credential `bun:"rel:has-many,join:id=account_id"`
+	WebauthnRegistrations []*WebauthnRegistration `bun:"rel:has-many,join:id=account_id"`
+	WebauthnCredentials   []*WebauthnCredential   `bun:"rel:has-many,join:id=account_id"`
 
-	webauthnCredential []webauthn.Credential
+	credential []webauthn.Credential
 }
 
 type AccountList []Account
@@ -28,12 +29,12 @@ func NewAccount() *Account {
 }
 
 func (a *Account) AddCredential(cred webauthn.Credential) {
-	a.webauthnCredential = append(a.webauthnCredential, cred)
+	a.credential = append(a.credential, cred)
 }
 
 func (a *Account) CredentialExcludeList() []protocol.CredentialDescriptor {
 	credentialExcludeList := []protocol.CredentialDescriptor{}
-	for _, cred := range a.webauthnCredential {
+	for _, cred := range a.credential {
 		descriptor := protocol.CredentialDescriptor{
 			Type:         protocol.PublicKeyCredentialType,
 			CredentialID: cred.ID,
@@ -61,5 +62,5 @@ func (a *Account) WebAuthnIcon() string {
 }
 
 func (a *Account) WebAuthnCredentials() []webauthn.Credential {
-	return a.webauthnCredential
+	return a.credential
 }

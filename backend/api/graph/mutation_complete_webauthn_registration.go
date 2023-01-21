@@ -8,5 +8,6 @@ import (
 )
 
 func (r *mutationResolver) CompleteWebauthnRegistration(ctx context.Context, input model.CompleteWebauthnRegistrationInput) (bool, error) {
+	fmt.Println(input)
 	panic(fmt.Errorf("not implemented"))
 }

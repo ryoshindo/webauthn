@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Credential struct {
+type WebauthnCredential struct {
 	ID         string    `bun:"id,pk"`
 	CreatedAt  time.Time `bun:"created_at"`
 	UpdatedAt  time.Time `bun:"updated_at"`
@@ -11,13 +11,14 @@ type Credential struct {
 	ExternalID string    `bun:"external_id"`
 	SignCount  int64     `bun:"sign_count"`
 
-	Account *Account `bun:"rel:belongs-to,join:account_id=id"`
+	Account      *Account              `bun:"rel:belongs-to,join:account_id=id"`
+	Registration *WebauthnRegistration `bun:"rel:belongs-to,join:registration_id=id"`
 }
 
-type CredentialList []Credential
+type WebauthnCredentialList []WebauthnCredential
 
-func NewCredential() *Credential {
-	return &Credential{
+func NewWebauthnCredential() *WebauthnCredential {
+	return &WebauthnCredential{
 		ID: NewULIDString(),
 	}
 }
