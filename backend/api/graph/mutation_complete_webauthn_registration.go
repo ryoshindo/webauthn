@@ -10,6 +10,7 @@ import (
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/ryoshindo/webauthn/backend/api/graph/model"
 	"github.com/ryoshindo/webauthn/backend/api/graph/session"
+	m "github.com/ryoshindo/webauthn/backend/model"
 )
 
 func (r *mutationResolver) CompleteWebauthnRegistration(ctx context.Context, input model.CompleteWebauthnRegistrationInput) (bool, error) {
@@ -21,7 +22,7 @@ func (r *mutationResolver) CompleteWebauthnRegistration(ctx context.Context, inp
 	parsedResponse, err := protocol.ParseCredentialCreationResponseBody(strings.NewReader(input.Credential))
 	if err != nil {
 		fmt.Println(err.Error())
-		return false, errors.New("INAPPROPRIATE_WEBAUTHN_REGISTRATION_CREDENTIAL")
+		return false, errors.New("INAPPROPRIATE_WEBAUTHN_REGISTRATION_CREDENTIAL_INPUT")
 	}
 
 	sess := session.GetSession(ctx)
@@ -30,10 +31,18 @@ func (r *mutationResolver) CompleteWebauthnRegistration(ctx context.Context, inp
 		UserID:           []byte(account.ID),
 		UserVerification: protocol.VerificationRequired,
 	}
-	_, err = r.webAuthn.CreateCredential(account, data, parsedResponse)
+	credential, err := r.webAuthn.CreateCredential(account, data, parsedResponse)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false, errors.New("WEBAUTHN_REGISTRATION_FAILED")
+	}
+
+	cred := &m.WebauthnCredential{
+		PublicKey: string(credential.PublicKey),
+	}
+	if err := r.accountRepo.CreateWebauthnCredential(ctx, account, cred); err != nil {
+		fmt.Println(err.Error())
+		return false, errors.New("INAPPROPRIATE_WEBAUTHN_REGISTRATION_CREDENTIAL")
 	}
 
 	return true, nil

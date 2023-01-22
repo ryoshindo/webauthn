@@ -14,7 +14,7 @@ import { reactHookFormDefaultOptions } from "src/form/reactHookFormDefaultOption
 type FormValues = {};
 
 export const Register: FC<
-  { submitting: boolean; onSubmit: (values: FormValues) => void } & ChakraProps
+  { onSubmit: (values: FormValues) => void; submitting: boolean } & ChakraProps
 > = ({ submitting, onSubmit, ...props }) => {
   const {
     handleSubmit,

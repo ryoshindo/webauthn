@@ -38,3 +38,12 @@ func (r *AccountRepository) Create(ctx context.Context, account *model.Account) 
 
 	return nil
 }
+
+func (r *AccountRepository) CreateWebauthnCredential(ctx context.Context, account *model.Account, webauthnCredential *model.WebauthnCredential) error {
+	webauthnCredential.AccountID = account.ID
+	if _, err := db.Get(ctx).NewInsert().Model(webauthnCredential).Exec(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
