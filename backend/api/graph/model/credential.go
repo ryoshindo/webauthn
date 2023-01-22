@@ -16,3 +16,11 @@ type response struct {
 }
 
 type clientExtensionResult struct{}
+
+type CredentialInput struct {
+	CompleteWebauthnRegistrationInput
+}
+
+func (i *CompleteWebauthnRegistrationInput) Read([]byte) (int, error) {
+	return 0, nil
+}

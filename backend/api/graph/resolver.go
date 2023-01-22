@@ -22,7 +22,7 @@ func NewResolver(
 	webAuthn, _ := webauthn.New(&webauthn.Config{
 		RPDisplayName: "Ryo Shindo",
 		RPID:          "localhost",
-		RPOrigin:      "http://localhost:8080",
+		RPOrigin:      "http://localhost:3333", // FIXME
 	})
 
 	return &Resolver{

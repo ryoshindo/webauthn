@@ -12,7 +12,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-redis/redis/v9"
-	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/ryoshindo/webauthn/backend/api/graph"
 	"github.com/ryoshindo/webauthn/backend/api/graph/generated"
 	"github.com/ryoshindo/webauthn/backend/api/graph/session"
@@ -28,11 +27,6 @@ import (
 
 const defaultPort = "8080"
 
-var (
-	WebAuthn *webauthn.WebAuthn
-	err      error
-)
-
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -46,15 +40,6 @@ func main() {
 		Debug:            true,
 	}).Handler)
 	r.Use(middleware.Logger)
-
-	WebAuthn, err = webauthn.New(&webauthn.Config{
-		RPDisplayName: "Ryo Shindo",
-		RPID:          "localhost",
-		RPOrigin:      "http://localhost:8080", // FIXME: hostname
-	})
-	if err != nil {
-		log.Fatalln(err)
-	}
 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(os.Getenv("DB_DSN"))))
 	db := bun.NewDB(sqldb, pgdialect.New())
