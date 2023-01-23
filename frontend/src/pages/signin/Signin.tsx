@@ -18,18 +18,18 @@ type FormValues = {
 };
 
 export const Signin: FC<
-  { onSubmit: (values: FormValues) => void } & ChakraProps
-> = ({ onSubmit, ...props }) => {
+  { onSubmit: (values: FormValues) => void; submitting: boolean } & ChakraProps
+> = ({ onSubmit, submitting, ...props }) => {
   return (
     <Box {...props}>
-      <EmailForm onSubmit={onSubmit} />
+      <EmailForm onSubmit={onSubmit} submitting={submitting} />
     </Box>
   );
 };
 
 const EmailForm: FC<
-  { onSubmit: (values: FormValues) => void } & ChakraProps
-> = ({ onSubmit, ...props }) => {
+  { onSubmit: (values: FormValues) => void; submitting: boolean } & ChakraProps
+> = ({ onSubmit, submitting, ...props }) => {
   const {
     handleSubmit,
     register,
@@ -59,7 +59,7 @@ const EmailForm: FC<
               alignItems="center"
               justifyContent="center"
             >
-              <Button w="100px" type="submit">
+              <Button w="100px" type="submit" isLoading={submitting}>
                 Sign In
               </Button>
             </Box>

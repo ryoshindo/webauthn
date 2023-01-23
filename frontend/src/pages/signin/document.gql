@@ -1,0 +1,7 @@
+mutation InitiateWebauthnLogin($input: InitiateWebauthnLoginInput!) {
+  initiateWebauthnLogin(input: $input)
+}
+
+mutation CompleteWebauthnLogin($input: CompleteWebauthnLoginInput!) {
+  completeWebauthnLogin(input: $input)
+}

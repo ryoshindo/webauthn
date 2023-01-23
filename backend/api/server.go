@@ -43,6 +43,7 @@ func main() {
 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(os.Getenv("DB_DSN"))))
 	db := bun.NewDB(sqldb, pgdialect.New())
+	defer db.Close()
 	db.AddQueryHook(bundebug.NewQueryHook())
 
 	redisClient := redis.NewClient(&redis.Options{
@@ -50,6 +51,7 @@ func main() {
 		Password: "",           // no password set
 		DB:       0,            // use default DB
 	})
+	defer redisClient.Close()
 
 	r.Use(dbContextMiddleware(db))
 	r.Use(kvsContextMiddleware(redisClient))

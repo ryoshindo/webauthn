@@ -37,9 +37,9 @@ func (r *mutationResolver) CompleteWebauthnRegistration(ctx context.Context, inp
 		return false, errors.New("WEBAUTHN_REGISTRATION_FAILED")
 	}
 
-	cred := &m.WebauthnCredential{
-		PublicKey: string(credential.PublicKey),
-	}
+	cred := m.NewWebauthnCredential()
+	cred.PublicKeyID = credential.ID
+	cred.PublicKey = credential.PublicKey
 	if err := r.accountRepo.CreateWebauthnCredential(ctx, account, cred); err != nil {
 		fmt.Println(err.Error())
 		return false, errors.New("INAPPROPRIATE_WEBAUTHN_REGISTRATION_CREDENTIAL")

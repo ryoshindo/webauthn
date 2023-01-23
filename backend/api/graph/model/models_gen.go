@@ -21,3 +21,7 @@ type CreateAccountInput struct {
 	Email    string `json:"email"`
 	UserName string `json:"userName"`
 }
+
+type InitiateWebauthnLoginInput struct {
+	Email string `json:"email"`
+}

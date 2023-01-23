@@ -26,13 +26,17 @@ input CompleteWebauthnLoginInput {
   email: String!
 }
 
+input InitiateWebauthnLoginInput {
+  email: String!
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): Boolean!
   initiateWebauthnRegistration: String!
   completeWebauthnRegistration(
     input: CompleteWebauthnRegistrationInput!
   ): Boolean!
-  initiateWebauthnLogin: String!
+  initiateWebauthnLogin(input: InitiateWebauthnLoginInput!): String!
   completeWebauthnLogin(input: CompleteWebauthnLoginInput!): Boolean!
   logout: Boolean!
 }

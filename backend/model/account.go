@@ -14,14 +14,19 @@ type Account struct {
 	Email     string    `bun:"email"`
 	UserName  string    `bun:"user_name"`
 
-	WebauthnCredentials []*WebauthnCredential `bun:"rel:has-many,join:id=account_id"`
+	WebauthnCredentials []WebauthnCredential `bun:"rel:has-many,join:id=account_id"`
 
 	credential []webauthn.Credential
 
 	WebauthnRegistration webauthnRegistration `json:"webauthn_registration" bun:"-"`
+	WebauthnLogin        webauthnLogin        `json:"webauthn_login" bun:"-"`
 }
 
 type webauthnRegistration struct {
+	Challenge string `json:"challenge"`
+}
+
+type webauthnLogin struct {
 	Challenge string `json:"challenge"`
 }
 
@@ -67,5 +72,11 @@ func (a *Account) WebAuthnIcon() string {
 }
 
 func (a *Account) WebAuthnCredentials() []webauthn.Credential {
-	return a.credential
+	credentials := make([]webauthn.Credential, len(a.WebauthnCredentials))
+	for i, c := range a.WebauthnCredentials {
+		credentials[i].ID = []byte(c.PublicKeyID)
+		credentials[i].PublicKey = []byte(c.PublicKey)
+	}
+
+	return credentials
 }

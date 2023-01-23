@@ -2,7 +2,6 @@ package session
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -99,7 +98,6 @@ func GetSession(ctx context.Context) *model.Session {
 
 func CreateSession(ctx context.Context, account *model.Account) error {
 	handler, _ := ctx.Value(sessionHandlerCtxKey).(*sessionHandler)
-	fmt.Println("createsesio", handler, account)
 	if handler == nil {
 		return nil
 	}

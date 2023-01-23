@@ -54,7 +54,7 @@ type ComplexityRoot struct {
 		CompleteWebauthnLogin        func(childComplexity int, input model.CompleteWebauthnLoginInput) int
 		CompleteWebauthnRegistration func(childComplexity int, input model.CompleteWebauthnRegistrationInput) int
 		CreateAccount                func(childComplexity int, input model.CreateAccountInput) int
-		InitiateWebauthnLogin        func(childComplexity int) int
+		InitiateWebauthnLogin        func(childComplexity int, input model.InitiateWebauthnLoginInput) int
 		InitiateWebauthnRegistration func(childComplexity int) int
 		Logout                       func(childComplexity int) int
 	}
@@ -68,7 +68,7 @@ type MutationResolver interface {
 	CreateAccount(ctx context.Context, input model.CreateAccountInput) (bool, error)
 	InitiateWebauthnRegistration(ctx context.Context) (string, error)
 	CompleteWebauthnRegistration(ctx context.Context, input model.CompleteWebauthnRegistrationInput) (bool, error)
-	InitiateWebauthnLogin(ctx context.Context) (string, error)
+	InitiateWebauthnLogin(ctx context.Context, input model.InitiateWebauthnLoginInput) (string, error)
 	CompleteWebauthnLogin(ctx context.Context, input model.CompleteWebauthnLoginInput) (bool, error)
 	Logout(ctx context.Context) (bool, error)
 }
@@ -153,7 +153,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Mutation.InitiateWebauthnLogin(childComplexity), true
+		args, err := ec.field_Mutation_initiateWebauthnLogin_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.InitiateWebauthnLogin(childComplexity, args["input"].(model.InitiateWebauthnLoginInput)), true
 
 	case "Mutation.initiateWebauthnRegistration":
 		if e.complexity.Mutation.InitiateWebauthnRegistration == nil {
@@ -187,6 +192,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCompleteWebauthnLoginInput,
 		ec.unmarshalInputCompleteWebauthnRegistrationInput,
 		ec.unmarshalInputCreateAccountInput,
+		ec.unmarshalInputInitiateWebauthnLoginInput,
 	)
 	first := true
 
@@ -275,13 +281,17 @@ input CompleteWebauthnLoginInput {
   email: String!
 }
 
+input InitiateWebauthnLoginInput {
+  email: String!
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): Boolean!
   initiateWebauthnRegistration: String!
   completeWebauthnRegistration(
     input: CompleteWebauthnRegistrationInput!
   ): Boolean!
-  initiateWebauthnLogin: String!
+  initiateWebauthnLogin(input: InitiateWebauthnLoginInput!): String!
   completeWebauthnLogin(input: CompleteWebauthnLoginInput!): Boolean!
   logout: Boolean!
 }
@@ -330,6 +340,21 @@ func (ec *executionContext) field_Mutation_createAccount_args(ctx context.Contex
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNCreateAccountInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCreateAccountInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_initiateWebauthnLogin_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.InitiateWebauthnLoginInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNInitiateWebauthnLoginInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐInitiateWebauthnLoginInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -691,7 +716,7 @@ func (ec *executionContext) _Mutation_initiateWebauthnLogin(ctx context.Context,
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().InitiateWebauthnLogin(rctx)
+		return ec.resolvers.Mutation().InitiateWebauthnLogin(rctx, fc.Args["input"].(model.InitiateWebauthnLoginInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -717,6 +742,17 @@ func (ec *executionContext) fieldContext_Mutation_initiateWebauthnLogin(ctx cont
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_initiateWebauthnLogin_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
 	}
 	return fc, nil
 }
@@ -2874,6 +2910,34 @@ func (ec *executionContext) unmarshalInputCreateAccountInput(ctx context.Context
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputInitiateWebauthnLoginInput(ctx context.Context, obj interface{}) (model.InitiateWebauthnLoginInput, error) {
+	var it model.InitiateWebauthnLoginInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"email"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "email":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			it.Email, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -3432,6 +3496,11 @@ func (ec *executionContext) unmarshalNCompleteWebauthnRegistrationInput2github�
 
 func (ec *executionContext) unmarshalNCreateAccountInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐCreateAccountInput(ctx context.Context, v interface{}) (model.CreateAccountInput, error) {
 	res, err := ec.unmarshalInputCreateAccountInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNInitiateWebauthnLoginInput2githubᚗcomᚋryoshindoᚋwebauthnᚋbackendᚋapiᚋgraphᚋmodelᚐInitiateWebauthnLoginInput(ctx context.Context, v interface{}) (model.InitiateWebauthnLoginInput, error) {
+	res, err := ec.unmarshalInputInitiateWebauthnLoginInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 

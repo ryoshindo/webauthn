@@ -2,7 +2,8 @@
 CREATE TABLE webauthn_credentials (
     id VARCHAR(32) PRIMARY KEY,
     account_id VARCHAR(32) NOT NULL REFERENCES accounts ON UPDATE NO ACTION ON DELETE CASCADE,
-    public_key VARCHAR(255),
+    public_key_id BYTEA,
+    public_key BYTEA,
     external_id VARCHAR(255),
     sign_count BIGINT,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
