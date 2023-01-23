@@ -24,12 +24,19 @@ export const Register: FC<
   });
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" {...props}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      position="relative"
+      h="100vh"
+      {...props}
+    >
       <form onSubmit={handleSubmit((v) => onSubmit(v))}>
-        <Card>
+        <Card align="center">
           <CardBody>
             <FormControl id="webauthn">
-              <FormLabel>WebAuthn Device</FormLabel>
+              <FormLabel mx={0}>WebAuthn Device</FormLabel>
             </FormControl>
             <Box
               mt="24px"

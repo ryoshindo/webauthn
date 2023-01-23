@@ -40,12 +40,19 @@ const EmailForm: FC<
   });
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" {...props}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      position="relative"
+      h="100vh"
+      {...props}
+    >
       <form onSubmit={handleSubmit((v) => onSubmit(v))}>
         <Card>
           <CardBody>
             <FormControl id="email" isInvalid={!!errors.email}>
-              <FormLabel>email</FormLabel>
+              <FormLabel mx={0}>email</FormLabel>
               <Input
                 type="text"
                 inputMode="email"
@@ -55,7 +62,7 @@ const EmailForm: FC<
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
             <FormControl mt="24px" id="userName" isInvalid={!!errors.userName}>
-              <FormLabel>user name</FormLabel>
+              <FormLabel mx={0}>user name</FormLabel>
               <Input
                 type="text"
                 inputMode="text"
