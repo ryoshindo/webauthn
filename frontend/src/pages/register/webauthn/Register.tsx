@@ -33,10 +33,12 @@ export const Register: FC<
       {...props}
     >
       <form onSubmit={handleSubmit((v) => onSubmit(v))}>
-        <Card align="center">
-          <CardBody>
+        <Card w="300px" h="300px" alignItems="center" justifyContent="center">
+          <CardBody w="75%" position="absolute">
             <FormControl id="webauthn">
-              <FormLabel mx={0}>WebAuthn Device</FormLabel>
+              <FormLabel mx={0} textAlign="center">
+                WebAuthn Device
+              </FormLabel>
             </FormControl>
             <Box
               mt="24px"

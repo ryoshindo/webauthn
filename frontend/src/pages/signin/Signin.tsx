@@ -48,8 +48,8 @@ const EmailForm: FC<
       {...props}
     >
       <form onSubmit={handleSubmit((v) => onSubmit(v))}>
-        <Card>
-          <CardBody>
+        <Card w="300px" h="300px" alignItems="center" justifyContent="center">
+          <CardBody w="75%" position="absolute">
             <FormControl id="email" isInvalid={!!errors.email}>
               <FormLabel mx={0}>email</FormLabel>
               <Input
